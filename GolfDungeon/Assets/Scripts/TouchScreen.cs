@@ -7,6 +7,7 @@ public class TouchScreen : MonoBehaviour
     Vector2 initialPos;
     BoxCollider2D collision;
     PlayerMove playerMove;
+    public LineRenderer direction;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +24,16 @@ public class TouchScreen : MonoBehaviour
     private void OnMouseDown()
     {
        initialPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        direction.SetPosition(0, initialPos);
+    }
+    private void OnMouseDrag()
+    {
+        direction.SetPosition(1, Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
     private void OnMouseUp()
     {
+        direction.SetPosition(0, Vector2.zero);
+        direction.SetPosition(1, Vector2.zero);
         playerMove.Play(initialPos, Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
     void SetTouchScreen(GamePhases phase)
@@ -35,7 +43,7 @@ public class TouchScreen : MonoBehaviour
             case GamePhases.Play:
                 collision.enabled = true;
                 break;
-                case GamePhases.BallMoving: 
+                case GamePhases.BallMoving:
                 collision.enabled = false;
                 break;
         }
