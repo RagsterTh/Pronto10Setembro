@@ -24,11 +24,12 @@ public class TouchScreen : MonoBehaviour
     private void OnMouseDown()
     {
        initialPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        direction.SetPosition(0, initialPos);
+        direction.SetPosition(0, playerMove.transform.position);
     }
     private void OnMouseDrag()
     {
-        direction.SetPosition(1, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        GameController.instance.OnMouseDrag?.Invoke();
+        direction.SetPosition(1, playerMove.transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
     private void OnMouseUp()
     {

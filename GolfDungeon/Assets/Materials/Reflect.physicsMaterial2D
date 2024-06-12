@@ -6,6 +6,6 @@ PhysicsMaterial2D:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bouceness
-  friction: 0.8
-  bounciness: 0.3
+  m_Name: Reflect
+  friction: 0
+  bounciness: 2

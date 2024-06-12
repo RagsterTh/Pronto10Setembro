@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 public enum GamePhases
 {
     Play, BallMoving
@@ -12,6 +14,8 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     public TouchScreen touchScreen;
     public PlayerMove playerMove;
+
+    public UnityEvent OnMouseDrag;
 
     public delegate void GamePhaseChanged(GamePhases gamePhase);
     public event GamePhaseChanged OnGamePhaseChanged;

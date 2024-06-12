@@ -15,6 +15,13 @@ public class PlayerMove : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         character = transform.GetChild(0).gameObject;
+        GameController.instance.OnMouseDrag.AddListener(delegate
+        {
+            if (character.activeSelf)
+            {
+                character.transform.LookAt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            }
+        });
         GameController.instance.OnGamePhaseChanged += SetCharacter;
     }
 
@@ -27,10 +34,6 @@ public class PlayerMove : MonoBehaviour
             body.velocity = new Vector3(0, 0, 0);
             GameController.instance.SetGamePhase(GamePhases.Play);
             isMoving = false;
-        }
-        if (character.activeSelf)
-        {
-            character.transform.LookAt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
     }
     
