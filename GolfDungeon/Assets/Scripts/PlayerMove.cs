@@ -9,20 +9,10 @@ public class PlayerMove : MonoBehaviour
     Rigidbody2D body;
     Vector2 initiaPos;
     bool isMoving;
-    GameObject character;
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
-        character = transform.GetChild(0).gameObject;
-        GameController.instance.OnMouseDrag.AddListener(delegate
-        {
-            if (character.activeSelf)
-            {
-                character.transform.LookAt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            }
-        });
-        GameController.instance.OnGamePhaseChanged += SetCharacter;
     }
 
     // Update is called once per frame
@@ -32,7 +22,7 @@ public class PlayerMove : MonoBehaviour
         if (speed < 0.5f && isMoving)
         {
             body.velocity = new Vector3(0, 0, 0);
-            GameController.instance.SetGamePhase(GamePhases.Play);
+            GameController.instance.SetGamePhase(GamePhases.WalkingToBall);
             isMoving = false;
         }
     }
@@ -48,16 +38,11 @@ public class PlayerMove : MonoBehaviour
         yield return new WaitForSeconds(1);
         isMoving = true;
     }
-    void SetCharacter(GamePhases phase)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        switch (phase)
+        if(body.velocity.magnitude > 15)
         {
-            case GamePhases.Play:
-                character.SetActive(true);
-                break;
-            case GamePhases.BallMoving:
-                character.SetActive(false);
-                break;
+            print("QUEBROU TUDO");
         }
     }
 }

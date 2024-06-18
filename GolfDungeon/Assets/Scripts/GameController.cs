@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public enum GamePhases
 {
-    Play, BallMoving
+    Play, BallMoving, WalkingToBall
 }
 public class GameController : MonoBehaviour
 {
