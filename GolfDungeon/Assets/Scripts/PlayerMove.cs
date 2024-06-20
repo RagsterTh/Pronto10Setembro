@@ -11,16 +11,17 @@ public class PlayerMove : MonoBehaviour
     Vector2 initiaPos;
     bool isMoving;
     public UnityEvent OnExtremeVelocity;
+    public UnityEvent OnTimeRestaured;
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         OnExtremeVelocity.AddListener(delegate
         {
-            Time.timeScale = 0.3f;
-            body.velocity = new Vector2(body.velocity.x - (body.velocity.x / 2), body.velocity.y - (body.velocity.y / 2));
+            Time.timeScale /= body.velocity.magnitude/2;
+            body.velocity = new Vector2(body.velocity.x - (body.velocity.x / 1.2f), body.velocity.y - (body.velocity.y / 1.2f));
             StartCoroutine(ReturnToNormalTime());
-            print("QUEBROU TUDO");
+            print(body.velocity);
         });
     }
 
@@ -51,7 +52,6 @@ public class PlayerMove : MonoBehaviour
     {
         if(body.velocity.magnitude > 15)
         {
-            print(body.velocity);
             OnExtremeVelocity.Invoke();
         }
     }
@@ -59,7 +59,6 @@ public class PlayerMove : MonoBehaviour
     {
         if (body.velocity.magnitude > 15)
         {
-            print(body.velocity);
             OnExtremeVelocity.Invoke();
         }
     }
@@ -68,8 +67,8 @@ public class PlayerMove : MonoBehaviour
         while(Time.timeScale < 1)
         {
             yield return new WaitForSeconds(0.1f);
-            Time.timeScale += 0.01f;
+            Time.timeScale += 0.1f;
         }
-        print("encerrou");
+        OnTimeRestaured?.Invoke();
     }
 }
