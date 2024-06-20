@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -9,10 +10,18 @@ public class PlayerMove : MonoBehaviour
     Rigidbody2D body;
     Vector2 initiaPos;
     bool isMoving;
+    public UnityEvent OnExtremeVelocity;
     // Start is called before the first frame update
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        OnExtremeVelocity.AddListener(delegate
+        {
+            Time.timeScale = 0.3f;
+            body.velocity = new Vector2(body.velocity.x - (body.velocity.x / 2), body.velocity.y - (body.velocity.y / 2));
+            StartCoroutine(ReturnToNormalTime());
+            print("QUEBROU TUDO");
+        });
     }
 
     // Update is called once per frame
@@ -42,7 +51,25 @@ public class PlayerMove : MonoBehaviour
     {
         if(body.velocity.magnitude > 15)
         {
-            print("QUEBROU TUDO");
+            print(body.velocity);
+            OnExtremeVelocity.Invoke();
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (body.velocity.magnitude > 15)
+        {
+            print(body.velocity);
+            OnExtremeVelocity.Invoke();
+        }
+    }
+    IEnumerator ReturnToNormalTime()
+    {
+        while(Time.timeScale < 1)
+        {
+            yield return new WaitForSeconds(0.1f);
+            Time.timeScale += 0.01f;
+        }
+        print("encerrou");
     }
 }
